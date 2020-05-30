@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { fadeIn, zoomIn } from 'utils/keyframes';
+import { fadeIn } from 'utils/keyframes';
 
 export const Container = styled.div`
   margin: 3rem 0;
@@ -35,7 +35,7 @@ export const ImagesContainer = styled.div`
   img {
     opacity: 0.8;
     transition: opacity 250ms;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 
     &:hover {
       opacity: 1;
@@ -65,7 +65,7 @@ export const Preview = styled.div`
     height: auto;
     width: auto;
 
-    animation: ${zoomIn} 250ms forwards;
+    box-shadow: 0 5px 15px -4px rgba(0, 0, 0, 0.5);
   }
 
   > :first-child,
@@ -79,8 +79,7 @@ export const Preview = styled.div`
 export const Toolbar = styled.div`
   height: 3rem;
 
-  padding: 1rem;
-  padding-top: 0.75rem;
+  padding: 0.35rem 1rem 0.75rem;
   display: flex;
   align-items: center;
 `;
@@ -116,12 +115,12 @@ export const AddButton = styled.button`
 
   color: #222;
   font-weight: bold;
-  line-height: 1.5rem;
 
-  border-radius: 0.75rem;
   background: transparent;
   border: none;
+  user-select: none;
   cursor: pointer;
+  border-radius: 0.75rem;
   box-shadow: 0 2px 5px -2px rgba(0, 0, 0, 0.6),
     0 0px 5px -1px rgba(0, 0, 0, 0.4);
   transition: box-shadow 250ms;
