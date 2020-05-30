@@ -38,6 +38,9 @@ export function Gallery({ images = [] }) {
           <GalleryImage src={img} onClick={handleImageToggle(idx)} key={img} />
         ))}
       </S.ImagesContainer>
+      <S.Toolbar>
+        <S.AddButton>+</S.AddButton>
+      </S.Toolbar>
 
       {focusedIdx !== null && indexes && (
         <S.Preview onClick={() => setFocusedIdx(null)}>
