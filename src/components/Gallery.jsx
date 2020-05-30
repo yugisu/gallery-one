@@ -1,12 +1,21 @@
-import React, { useCallback, useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import React, { useCallback, useState, useMemo } from 'react';
+import styled from 'styled-components';
+
+import { fadeIn, zoomIn } from '../utils/keyframes';
 
 import { GalleryImage } from './GalleryImage';
 
 const Container = styled.div`
+  padding: 0.5rem 0.5rem 3rem;
+
+  border-radius: 0.45rem;
+  background: linear-gradient(to bottom, #222 90%, transparent);
+  box-shadow: 0 5px 20px -4px rgba(0, 0, 0, 0.4);
+`;
+
+const ImagesContainer = styled.div`
   display: grid;
-  padding: 3rem;
-  gap: 1rem;
+  gap: 0.5rem;
 
   grid-template-columns: repeat(3, 250px);
   grid-auto-rows: 250px;
@@ -19,26 +28,6 @@ const Container = styled.div`
   @media (max-width: 420px) {
     grid-template-columns: repeat(1, 150px);
     grid-auto-rows: 150px;
-  }
-`;
-
-const fadeIn = keyframes`
-  from {
-    background: rgba(0, 0, 0, 0.0);
-  }
-  to {
-    background: rgba(0, 0, 0, 0.6);
-  }
-`;
-
-const appear = keyframes`
-  0% {
-    transform: scale(0.97);
-    box-shadow: none;
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, .3);
   }
 `;
 
@@ -59,67 +48,74 @@ const Preview = styled.div`
   animation: ${fadeIn} 250ms forwards;
 
   img {
-    max-height: 80vh;
-    max-width: 70vw;
+    max-height: 70vh;
+    max-width: 60vw;
     height: auto;
     width: auto;
 
-    animation: ${appear} 250ms forwards;
+    animation: ${zoomIn} 250ms forwards;
+  }
+
+  > :first-child,
+  > :last-child {
+    max-height: 30vh;
+    max-width: 15vh;
+    margin: 0 1rem;
   }
 `;
 
 const getNextIndex = (max, current, change) => (max + current + change) % max;
 
 export function Gallery({ images = [] }) {
-  const [focused, setFocused] = useState(null);
+  const [focusedIdx, setFocusedIdx] = useState(null);
+
+  const indexes = useMemo(
+    () =>
+      focusedIdx === null
+        ? null
+        : {
+            prev: getNextIndex(images.length, focusedIdx, -1),
+            next: getNextIndex(images.length, focusedIdx, 1),
+          },
+    [images.length, focusedIdx]
+  );
 
   const handleImageToggle = useCallback(
     (newFocused) => (e) => {
       e.stopPropagation();
 
-      return setFocused((prevFocused) => {
-        if (!prevFocused) {
-          return newFocused;
-        }
-        return prevFocused === newFocused ? null : newFocused;
-      });
+      setFocusedIdx((prevFocused) =>
+        prevFocused === newFocused ? null : newFocused
+      );
     },
     []
   );
 
-  const getImageByIndexDiff = useCallback(
-    (indexDiff) => {
-      const currentIndex = images.indexOf(focused);
-      const newIndex = getNextIndex(images.length, currentIndex, indexDiff);
-
-      return images[newIndex] || focused;
-    },
-    [focused, images]
-  );
-
   return (
     <Container>
-      {images.map((img) => (
-        <GalleryImage src={img} onSelect={handleImageToggle} key={img} />
-      ))}
+      <ImagesContainer>
+        {images.map((img, idx) => (
+          <GalleryImage src={img} onClick={handleImageToggle(idx)} key={img} />
+        ))}
+      </ImagesContainer>
 
-      {focused && (
-        <Preview onClick={() => setFocused(null)}>
+      {focusedIdx !== null && indexes && (
+        <Preview onClick={() => setFocusedIdx(null)}>
           <GalleryImage
-            src={getImageByIndexDiff(-1)}
-            onSelect={handleImageToggle}
+            src={images[indexes.prev]}
+            onClick={handleImageToggle(indexes.prev)}
             alt="Kitten pic"
           />
 
           <GalleryImage
-            src={focused}
-            onSelect={() => (e) => e.stopPropagation()}
+            src={images[focusedIdx]}
+            onClick={(e) => e.stopPropagation()}
             alt="Kitten pic"
           />
 
           <GalleryImage
-            src={getImageByIndexDiff(1)}
-            onSelect={handleImageToggle}
+            src={images[indexes.next]}
+            onClick={handleImageToggle(indexes.next)}
             alt="Kitten pic"
           />
         </Preview>

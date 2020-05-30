@@ -9,9 +9,9 @@ const Inner = styled.img`
   object-fit: cover;
 
   cursor: pointer;
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 3px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 0.35rem;
 `;
 
-export function GalleryImage({ src, onSelect }) {
-  return <Inner src={src} onClick={onSelect?.(src)} alt="Kitten pic" />;
+export function GalleryImage({ src, onClick }) {
+  return <Inner src={src} onClick={onClick} alt="Kitten pic" />;
 }
