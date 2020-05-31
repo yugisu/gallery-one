@@ -28,7 +28,7 @@ export function AddImagePopup({ onImageAdd, onClose }) {
           placeholder="Paste the link to the photo here..."
           autoFocus
         />
-        <S.SubmitButton onClick={handleImageAdd}>
+        <S.SubmitButton onClick={handleImageAdd} title="Add image by link">
           <FiPlusCircle />
         </S.SubmitButton>
       </S.Container>

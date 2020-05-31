@@ -19,7 +19,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
 
-  background: linear-gradient(to top, #222, #555);
+  background: linear-gradient(to top, #333, #555);
 `;
 
 export function App() {

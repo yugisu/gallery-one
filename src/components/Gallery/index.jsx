@@ -73,6 +73,7 @@ export function Gallery({ images = [], onImageAdd, onImageDelete }) {
                 />
                 <S.DeleteButton
                   onClick={() => onImageDelete(images[focusedIdx])}
+                  title="Delete this image"
                 >
                   <FiTrash color="#fff" />
                 </S.DeleteButton>
