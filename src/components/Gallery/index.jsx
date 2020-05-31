@@ -1,12 +1,16 @@
 import React, { useCallback, useState, useMemo } from 'react';
+import { FiTrash, FiPlus } from 'react-icons/fi';
 
 import { GalleryImage } from 'components/GalleryImage';
+import { AddImagePopup } from 'components/AddImagePopup';
 
 import * as S from './styled';
 
 const getNextIndex = (max, current, change) => (max + current + change) % max;
 
-export function Gallery({ images = [] }) {
+export function Gallery({ images = [], addImage, deleteImage }) {
+  const [addImageShown, setAddImageShown] = useState(true);
+
   const [focusedIdx, setFocusedIdx] = useState(null);
 
   const indexes = useMemo(
@@ -18,6 +22,15 @@ export function Gallery({ images = [] }) {
             next: getNextIndex(images.length, focusedIdx, 1),
           },
     [images.length, focusedIdx]
+  );
+
+  const handleDeleteButtonClick = useCallback(
+    (e) => {
+      e.stopPropagation();
+
+      deleteImage(images[focusedIdx]);
+    },
+    [deleteImage, focusedIdx, images]
   );
 
   const handleImageToggle = useCallback(
@@ -39,12 +52,17 @@ export function Gallery({ images = [] }) {
             <GalleryImage
               src={img}
               onClick={handleImageToggle(idx)}
-              key={img}
+              key={idx}
             />
           ))}
         </S.ImagesContainer>
         <S.Toolbar>
-          <S.AddButton title="Add a new image">+</S.AddButton>
+          <S.AddButton
+            onClick={() => setAddImageShown(true)}
+            title="Add a new image"
+          >
+            <FiPlus color="#fff" />
+          </S.AddButton>
         </S.Toolbar>
 
         {focusedIdx !== null && indexes && (
@@ -55,11 +73,16 @@ export function Gallery({ images = [] }) {
               alt="Kitten pic"
             />
 
-            <GalleryImage
-              src={images[focusedIdx]}
-              onClick={(e) => e.stopPropagation()}
-              alt="Kitten pic"
-            />
+            <S.PreviewFocus>
+              <GalleryImage
+                src={images[focusedIdx]}
+                onClick={(e) => e.stopPropagation()}
+                alt="Kitten pic"
+              />
+              <S.DeleteButton onClick={() => deleteImage(images[focusedIdx])}>
+                <FiTrash color="#fff" />
+              </S.DeleteButton>
+            </S.PreviewFocus>
 
             <GalleryImage
               src={images[indexes.next]}
@@ -67,6 +90,13 @@ export function Gallery({ images = [] }) {
               alt="Kitten pic"
             />
           </S.Preview>
+        )}
+
+        {addImageShown && (
+          <AddImagePopup
+            onImageAdd={addImage}
+            onClose={() => setAddImageShown(false)}
+          />
         )}
       </S.Container>
     </S.Background>

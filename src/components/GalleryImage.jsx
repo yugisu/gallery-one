@@ -15,3 +15,5 @@ const Inner = styled.img`
 export function GalleryImage({ src, onClick }) {
   return <Inner src={src} onClick={onClick} alt="Kitten pic" />;
 }
+
+GalleryImage.Root = Inner;
