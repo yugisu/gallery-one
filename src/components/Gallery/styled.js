@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import { fadeIn } from 'utils/keyframes';
-
 import { GalleryImage } from 'components/GalleryImage';
 
 export const Background = styled.div`
@@ -50,20 +48,11 @@ export const ImagesContainer = styled.div`
 `;
 
 export const Preview = styled.div`
-  z-index: 9999;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  width: 100%;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  background: rgba(0, 0, 0, 0.6);
-
-  animation: ${fadeIn} 250ms forwards;
 
   ${GalleryImage.Root} {
     max-height: 70vh;
@@ -79,6 +68,13 @@ export const Preview = styled.div`
     max-height: 30vh;
     max-width: 15vh;
     margin: 0 1rem;
+
+    opacity: 0.6;
+    transition: opacity 250ms;
+
+    &:hover {
+      opacity: 1;
+    }
   }
 `;
 

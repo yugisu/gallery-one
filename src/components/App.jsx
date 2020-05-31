@@ -19,7 +19,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
 
-  background: linear-gradient(to top, #333, #444);
+  background: linear-gradient(to top, #222, #555);
 `;
 
 export function App() {
@@ -37,7 +37,11 @@ export function App() {
 
   return (
     <Container>
-      <Gallery images={images} addImage={addImage} deleteImage={deleteImage} />
+      <Gallery
+        images={images}
+        onImageAdd={addImage}
+        onImageDelete={deleteImage}
+      />
     </Container>
   );
 }

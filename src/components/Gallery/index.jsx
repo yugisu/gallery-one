@@ -3,14 +3,14 @@ import { FiTrash, FiPlus } from 'react-icons/fi';
 
 import { GalleryImage } from 'components/GalleryImage';
 import { AddImagePopup } from 'components/AddImagePopup';
+import { Overlay } from 'components/Overlay';
 
 import * as S from './styled';
 
 const getNextIndex = (max, current, change) => (max + current + change) % max;
 
-export function Gallery({ images = [], addImage, deleteImage }) {
-  const [addImageShown, setAddImageShown] = useState(true);
-
+export function Gallery({ images = [], onImageAdd, onImageDelete }) {
+  const [addImageShown, setAddImageShown] = useState(false);
   const [focusedIdx, setFocusedIdx] = useState(null);
 
   const indexes = useMemo(
@@ -25,11 +25,11 @@ export function Gallery({ images = [], addImage, deleteImage }) {
   );
 
   const handleImageToggle = useCallback(
-    (newFocused) => (e) => {
+    (newFocusedIdx) => (e) => {
       e.stopPropagation();
 
       setFocusedIdx((prevFocused) =>
-        prevFocused === newFocused ? null : newFocused
+        prevFocused === newFocusedIdx ? null : newFocusedIdx
       );
     },
     []
@@ -39,9 +39,9 @@ export function Gallery({ images = [], addImage, deleteImage }) {
     <S.Background>
       <S.Container>
         <S.ImagesContainer>
-          {images.map((img, idx) => (
+          {images.map((imageLink, idx) => (
             <GalleryImage
-              src={img}
+              src={imageLink}
               onClick={handleImageToggle(idx)}
               key={idx}
             />
@@ -57,35 +57,39 @@ export function Gallery({ images = [], addImage, deleteImage }) {
         </S.Toolbar>
 
         {focusedIdx !== null && indexes && (
-          <S.Preview onClick={() => setFocusedIdx(null)}>
-            <GalleryImage
-              src={images[indexes.prev]}
-              onClick={handleImageToggle(indexes.prev)}
-              alt="Kitten pic"
-            />
-
-            <S.PreviewFocus>
+          <Overlay onClick={() => setFocusedIdx(null)}>
+            <S.Preview>
               <GalleryImage
-                src={images[focusedIdx]}
-                onClick={(e) => e.stopPropagation()}
+                src={images[indexes.prev]}
+                onClick={handleImageToggle(indexes.prev)}
                 alt="Kitten pic"
               />
-              <S.DeleteButton onClick={() => deleteImage(images[focusedIdx])}>
-                <FiTrash color="#fff" />
-              </S.DeleteButton>
-            </S.PreviewFocus>
 
-            <GalleryImage
-              src={images[indexes.next]}
-              onClick={handleImageToggle(indexes.next)}
-              alt="Kitten pic"
-            />
-          </S.Preview>
+              <S.PreviewFocus>
+                <GalleryImage
+                  src={images[focusedIdx]}
+                  onClick={(e) => e.stopPropagation()}
+                  alt="Kitten pic"
+                />
+                <S.DeleteButton
+                  onClick={() => onImageDelete(images[focusedIdx])}
+                >
+                  <FiTrash color="#fff" />
+                </S.DeleteButton>
+              </S.PreviewFocus>
+
+              <GalleryImage
+                src={images[indexes.next]}
+                onClick={handleImageToggle(indexes.next)}
+                alt="Kitten pic"
+              />
+            </S.Preview>
+          </Overlay>
         )}
 
         {addImageShown && (
           <AddImagePopup
-            onImageAdd={addImage}
+            onImageAdd={onImageAdd}
             onClose={() => setAddImageShown(false)}
           />
         )}
