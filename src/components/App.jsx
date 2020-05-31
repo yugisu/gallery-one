@@ -26,7 +26,7 @@ export function App() {
   const [images, setImages] = useState(IMAGES);
 
   const addImage = useCallback(
-    (imageLink) => setImages((prev) => [imageLink, ...prev]),
+    (imageLink) => setImages((prev) => [...prev, imageLink]),
     []
   );
 

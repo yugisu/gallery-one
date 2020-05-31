@@ -24,15 +24,6 @@ export function Gallery({ images = [], addImage, deleteImage }) {
     [images.length, focusedIdx]
   );
 
-  const handleDeleteButtonClick = useCallback(
-    (e) => {
-      e.stopPropagation();
-
-      deleteImage(images[focusedIdx]);
-    },
-    [deleteImage, focusedIdx, images]
-  );
-
   const handleImageToggle = useCallback(
     (newFocused) => (e) => {
       e.stopPropagation();

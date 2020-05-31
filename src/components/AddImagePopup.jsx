@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { FiPlus } from 'react-icons/fi';
 
 import { fadeIn } from 'utils/keyframes';
 
@@ -20,11 +21,71 @@ const Overlay = styled.div`
   animation: ${fadeIn} 250ms forwards;
 `;
 
-const Container = styled.div``;
+const Container = styled.div`
+  height: 3rem;
+  width: 30rem;
 
-const Input = styled.input``;
+  display: flex;
 
-const SubmitButton = styled.button``;
+  color: #eee;
+  font-size: 1.3rem;
+
+  background: #222;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 5px -2px rgba(0, 0, 0, 0.6),
+    0 0px 5px -1px rgba(0, 0, 0, 0.4);
+`;
+
+const Input = styled.input`
+  flex: 1;
+  height: 100%;
+
+  padding: 0 1rem;
+
+  color: inherit;
+  font-size: inherit;
+
+  border-radius: 0.5rem 0 0 0.5rem;
+  border: none;
+  background: transparent;
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+const SubmitButton = styled.button`
+  flex-shrink: 0;
+
+  height: 3rem;
+  width: 3rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: inherit;
+  font-size: inherit;
+
+  border-radius: 0 0.5rem 0.5rem 0;
+  border: none;
+  user-select: none;
+  cursor: pointer;
+  background: transparent;
+
+  transition: background-color 250ms;
+
+  &:hover,
+  &:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  &:active {
+    outline: none;
+    background: rgba(255, 255, 255, 0.05);
+  }
+`;
 
 export function AddImagePopup({ onImageAdd, onClose }) {
   const [imageLink, setImageLink] = useState('');
@@ -35,26 +96,23 @@ export function AddImagePopup({ onImageAdd, onClose }) {
 
       imgElement.src = imageLink;
 
-      console.log(imgElement);
-
-      imgElement.onerror = (e) => {
-        console.log({ src: e.target.src, imageLink });
-
-        setImageLink('');
-      };
-      imgElement.onload = () => onImageAdd(imageLink);
+      imgElement.onerror = () => setImageLink('');
+      imgElement.onload = () => (onImageAdd(imageLink), onClose());
     }
   };
 
   return (
-    <Overlay onClick={onClose}>
-      <Container onClick={(e) => e.stopPropagation()}>
+    <Overlay onMouseDown={onClose}>
+      <Container onMouseDown={(e) => e.stopPropagation()}>
         <Input
           value={imageLink}
           onChange={(e) => setImageLink(e.target.value)}
+          placeholder="Paste the link to the photo here..."
           autoFocus
         />
-        <SubmitButton onClick={handleImageAdd}>Add image</SubmitButton>
+        <SubmitButton onClick={handleImageAdd}>
+          <FiPlus />
+        </SubmitButton>
       </Container>
     </Overlay>
   );
