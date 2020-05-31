@@ -32,37 +32,43 @@ export function Gallery({ images = [] }) {
   );
 
   return (
-    <S.Container>
-      <S.ImagesContainer>
-        {images.map((img, idx) => (
-          <GalleryImage src={img} onClick={handleImageToggle(idx)} key={img} />
-        ))}
-      </S.ImagesContainer>
-      <S.Toolbar>
-        <S.AddButton>+</S.AddButton>
-      </S.Toolbar>
+    <S.Background>
+      <S.Container>
+        <S.ImagesContainer>
+          {images.map((img, idx) => (
+            <GalleryImage
+              src={img}
+              onClick={handleImageToggle(idx)}
+              key={img}
+            />
+          ))}
+        </S.ImagesContainer>
+        <S.Toolbar>
+          <S.AddButton title="Add a new image">+</S.AddButton>
+        </S.Toolbar>
 
-      {focusedIdx !== null && indexes && (
-        <S.Preview onClick={() => setFocusedIdx(null)}>
-          <GalleryImage
-            src={images[indexes.prev]}
-            onClick={handleImageToggle(indexes.prev)}
-            alt="Kitten pic"
-          />
+        {focusedIdx !== null && indexes && (
+          <S.Preview onClick={() => setFocusedIdx(null)}>
+            <GalleryImage
+              src={images[indexes.prev]}
+              onClick={handleImageToggle(indexes.prev)}
+              alt="Kitten pic"
+            />
 
-          <GalleryImage
-            src={images[focusedIdx]}
-            onClick={(e) => e.stopPropagation()}
-            alt="Kitten pic"
-          />
+            <GalleryImage
+              src={images[focusedIdx]}
+              onClick={(e) => e.stopPropagation()}
+              alt="Kitten pic"
+            />
 
-          <GalleryImage
-            src={images[indexes.next]}
-            onClick={handleImageToggle(indexes.next)}
-            alt="Kitten pic"
-          />
-        </S.Preview>
-      )}
-    </S.Container>
+            <GalleryImage
+              src={images[indexes.next]}
+              onClick={handleImageToggle(indexes.next)}
+              alt="Kitten pic"
+            />
+          </S.Preview>
+        )}
+      </S.Container>
+    </S.Background>
   );
 }

@@ -2,16 +2,27 @@ import styled from 'styled-components';
 
 import { fadeIn } from 'utils/keyframes';
 
-export const Container = styled.div`
+export const Background = styled.div`
+  border-radius: 0.45rem;
   margin: 3rem 0;
+  background: linear-gradient(
+    45deg,
+    #f09433,
+    #e6683c,
+    #dc2743,
+    #cc2366,
+    #bc1888
+  );
+`;
 
+export const Container = styled.div`
   border-radius: 0.45rem;
   background: linear-gradient(
     to bottom,
     rgba(34, 34, 34, 0.8) 90%,
     transparent
   );
-  box-shadow: 0 5px 20px -4px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 5px 20px -4px rgba(0, 0, 0, 0.5), 0 0 3px rgba(0, 0, 0, 0.3);
 `;
 
 export const ImagesContainer = styled.div`

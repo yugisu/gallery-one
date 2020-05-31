@@ -18,15 +18,6 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
-  background: linear-gradient(
-    45deg,
-    #f09433,
-    #e6683c,
-    #dc2743,
-    #cc2366,
-    #bc1888
-  );
 `;
 
 export function App() {
